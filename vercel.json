@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/api/commandes", "dest": "/api/commandes.js" }
+  ]
+}

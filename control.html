@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contrôle ESP32</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        button {
+            padding: 10px;
+            margin: 10px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Contrôle de l'ESP32</h2>
+        <button id="pompeOn">Allumer la pompe</button>
+        <button id="pompeOff">Éteindre la pompe</button>
+        <button id="buzzerOn">Allumer le buzzer</button>
+        <button id="buzzerOff">Éteindre le buzzer</button>
+    </div>
+
+    <script>
+        const serverURL = 'https://esp32-secure-interface.vercel.app/api/commandes';
+
+        document.getElementById('pompeOn').addEventListener('click', () => sendCommande(true, false));
+        document.getElementById('pompeOff').addEventListener('click', () => sendCommande(false, false));
+        document.getElementById('buzzerOn').addEventListener('click', () => sendCommande(false, true));
+        document.getElementById('buzzerOff').addEventListener('click', () => sendCommande(false, false));
+
+        function sendCommande(pompe, buzzer) {
+            fetch(serverURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ pompe: pompe ? "ON" : "OFF", buzzer: buzzer ? "ON" : "OFF" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+        }
+    </script>
+</body>
+</html>
+    

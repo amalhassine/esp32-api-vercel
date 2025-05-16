@@ -1,70 +1,53 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Smart Farming - Contrôle de Pompe</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-image: url('background.jpg');
-      background-size: cover;
-      background-position: center;
-      margin: 0;
-      padding: 0;
-      color: white;
-      text-align: center;
-    }
-    .container {
-      padding-top: 50px;
-    }
-    .sensor-display {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-bottom: 50px;
-    }
-    .sensor {
-      background-color: rgba(0, 0, 0, 0.4);
-      padding: 20px;
-      border-radius: 10px;
-      width: 150px;
-    }
-    button {
-      font-size: 18px;
-      padding: 15px 30px;
-      margin: 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .on { background-color: #28a745; color: white; }
-    .off { background-color: #dc3545; color: white; }
-  </style>
+  <title>Smart Farming - Interface Pro</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Contrôle de l’irrigation via ESP32</h1>
-    <div class="sensor-display">
+  <div class="overlay">
+    <header>
+      <h1>Station Smart Farming</h1>
+      <p>Suivi en temps réel de l'humidité et de la température</p>
+    </header>
+
+    <section class="sensors">
       <div class="sensor">
-        <img src="temp.png" alt="Température" width="50"><br>
-        <strong>23°C</strong>
+        <img src="temp.png" alt="Température">
+        <p><span id="temp">--</span> °C</p>
       </div>
       <div class="sensor">
-        <img src="humid.png" alt="Humidité" width="50"><br>
-        <strong>60%</strong>
+        <img src="humid.png" alt="Humidité">
+        <p><span id="humid">--</span> %</p>
       </div>
-    </div>
-    <button class="on" onclick="sendCommand('ON')">Activer Pompe</button>
-    <button class="off" onclick="sendCommand('OFF')">Désactiver Pompe</button>
+    </section>
+
+    <section class="controls">
+      <button onclick="sendCommand('ON')" class="on">Activer Pompe</button>
+      <button onclick="sendCommand('OFF')" class="off">Désactiver Pompe</button>
+    </section>
   </div>
 
   <script>
+    // Simuler la lecture des capteurs
+    function refreshData() {
+      fetch('http://192.168.43.223/capteurs')  // Remplacer par votre IP locale/endpoint
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('temp').innerText = data.temperature;
+          document.getElementById('humid').innerText = data.humidite;
+        })
+        .catch(err => console.log("Erreur lecture capteurs", err));
+    }
+
     function sendCommand(state) {
       fetch('http://192.168.43.223/api/commandes?pompe=' + state)
-        .then(response => alert('Commande envoyée: ' + state))
-        .catch(error => alert('Erreur de connexion à l’ESP32'));
+        .then(response => alert("Commande envoyée: " + state))
+        .catch(err => alert("Erreur d'envoi"));
     }
+
+    setInterval(refreshData, 2000); // mise à jour chaque 2s
   </script>
 </body>
 </html>

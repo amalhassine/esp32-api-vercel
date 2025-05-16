@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-image: url('background.jpg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.overlay {
+  background-color: rgba(0,0,0,0.6);
+  min-height: 100vh;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+header h1 {
+  font-size: 2.5em;
+  margin-bottom: 10px;
+}
+
+.sensors {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  margin-top: 40px;
+}
+
+.sensor img {
+  width: 60px;
+}
+
+.sensor p {
+  font-size: 1.5em;
+  margin-top: 10px;
+}
+
+.controls {
+  margin-top: 50px;
+}
+
+button {
+  font-size: 20px;
+  padding: 15px 30px;
+  margin: 0 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.on {
+  background-color: #28a745;
+  color: white;
+}
+
+.off {
+  background-color: #dc3545;
+  color: white;
+}

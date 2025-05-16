@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Farming - Contrôle de Pompe</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      margin: 0;
+      padding: 0;
+      color: white;
+      text-align: center;
+    }
+    .container {
+      padding-top: 50px;
+    }
+    .sensor-display {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+    .sensor {
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-radius: 10px;
+      width: 150px;
+    }
+    button {
+      font-size: 18px;
+      padding: 15px 30px;
+      margin: 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .on { background-color: #28a745; color: white; }
+    .off { background-color: #dc3545; color: white; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contrôle de l’irrigation via ESP32</h1>
+    <div class="sensor-display">
+      <div class="sensor">
+        <img src="temp.png" alt="Température" width="50"><br>
+        <strong>23°C</strong>
+      </div>
+      <div class="sensor">
+        <img src="humid.png" alt="Humidité" width="50"><br>
+        <strong>60%</strong>
+      </div>
+    </div>
+    <button class="on" onclick="sendCommand('ON')">Activer Pompe</button>
+    <button class="off" onclick="sendCommand('OFF')">Désactiver Pompe</button>
+  </div>
+
+  <script>
+    function sendCommand(state) {
+      fetch('http://192.168.43.223/api/commandes?pompe=' + state)
+        .then(response => alert('Commande envoyée: ' + state))
+        .catch(error => alert('Erreur de connexion à l’ESP32'));
+    }
+  </script>
+</body>
+</html>
